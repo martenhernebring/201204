@@ -12,7 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/*1. Skriv ett program som tar in två filnamn som argument. 
+/*OBS: javac -encoding utf-8 on windows 10
+1. Skriv ett program som tar in två filnamn som argument. 
 Den första filen skall vara en befintlig textfil medan den andra filen inte får finnas. 
 2. Programmet skall ta bort alla svenska vokaler från den befintliga textfilen 
 och skriva allt annat till filen given som argument två. 
@@ -41,9 +42,12 @@ public class App {
             System.exit(-1);
         }
         try {
-            Path input = checkInput(args[0]);
-            Path file = checkFile(args[1]);
-            convert(input, file);
+            Path source = checkSource(args[0]);
+            Path target = checkTarget(args[1]);
+            convert(source, target);
+        } catch (InvalidPathException ex) {
+            System.err.println("The path is invalid: " + ex.getMessage());
+            System.exit(-1);
         } 
         catch (RuntimeException ex) {
             System.err.println("Unexpected error: " + ex.getMessage());
@@ -51,29 +55,17 @@ public class App {
         }
     }
 
-    private static Path checkInput(String source) {
-        Path inFile = null;
-        try {
-            inFile = Path.of(source);
+    private static Path checkSource(String file) {
+        Path inFile = Path.of(file);
             if (!Files.isReadable(inFile)) {
                 System.err.printf("The file %s is not readable.%n", inFile);
                 System.exit(-1);
             }
-        } catch (InvalidPathException ex) {
-            System.err.println("The path " + source + " is invalid.");
-            System.exit(-1);
-        }
         return inFile;
     }
 
-    private static Path checkFile(String file) {
-        Path outFile = null;
-        try {
-            outFile = Path.of(file).toAbsolutePath().normalize();
-        } catch (InvalidPathException ex) {
-            System.err.println("The path " + file + " is invalid.");
-            System.exit(-1);
-        }
+    private static Path checkTarget(String file) {
+        Path outFile =  Path.of(file).toAbsolutePath().normalize(); 
         if (Files.exists(outFile)) {
             System.err.printf("The file %s already exists.%n", outFile);
             System.exit(-1);
@@ -117,6 +109,7 @@ public class App {
         }
     }
 
+    //OBS: javac -encoding utf-8 on windows 10
     private static int stripSwedishVowels(Path inFile, StringBuilder output) throws IOException{
         int totalRemoved = 0;
         List<String> outputLines = new ArrayList<>();
