@@ -11,7 +11,7 @@ public class App {
         }
         var character = PlayerCharacter.randomCharacter(name);
         System.out.println(character);
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < 50; i++){
             character.levelUp();
             System.out.println(character);
         }

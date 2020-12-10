@@ -4,48 +4,44 @@ import java.util.concurrent.ThreadLocalRandom;
 import static u4.Attribute.*;
 
 public class AttributesGenerator {
-    private int[] attributes;
 
-    public AttributesGenerator(){
-        attributes = new int[values().length];
-    }
-
-    public int[] generateAttributes() {
-        generateStrength();
-        generateConstitution();
-        generateDexterity();
-        generateIntelligence();
-        generateWisdom();
-        generateCharisma();
+    public static int[] generateAttributes() {
+        int[] attributes = new int[values().length];
+        generateStrength(attributes);
+        generateConstitution(attributes);
+        generateDexterity(attributes);
+        generateIntelligence(attributes);
+        generateWisdom(attributes);
+        generateCharisma(attributes);
         return attributes;
     }
 
-    private int generate() {
+    private static int generate() {
         return ThreadLocalRandom.current().nextInt(MIN_VALUE, MAX_VALUE);
     }
 
-	private void generateStrength() {
+    private static void generateStrength(int[] attributes) {
         attributes[STR.get()] = generate();
-	}
+    }
 
-    private void generateConstitution() {
+    private static void generateConstitution(int[] attributes) {
         attributes[CON.get()] = generate();
-	}
+    }
 
-	private void generateDexterity() {
+    private static void generateDexterity(int[] attributes) {
         attributes[DEX.get()] = generate();
-	}
+    }
 
-	private void generateIntelligence() {
+    private static void generateIntelligence(int[] attributes) {
         attributes[INT.get()] = generate();
-	}
+    }
 
-	private void generateWisdom() {
+    private static void generateWisdom(int[] attributes) {
         attributes[WIS.get()] = generate();
-	}
+    }
 
-	private void generateCharisma() {
+    private static void generateCharisma(int[] attributes) {
         attributes[CHA.get()] = generate();
-	}
+    }
 
 }
