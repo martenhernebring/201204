@@ -19,8 +19,6 @@ med slumpmässiga attribut och slumpmässig klass.
 9. Skapa sedan en main-metod där användaren får skriva in ett namn på sin karaktär och sedan slumpas alla andra attribut fram med hjälp av metoden ovan. 
 10. Slutligen skall karaktären skrivas ut på skärmen, levla upp en gång och skrivas ut igen.*/
 
-import static u4.Attribute.*;
-
 public class PlayerCharacter {
     private String name;
     private PlayerClass pc;
@@ -34,12 +32,12 @@ public class PlayerCharacter {
     }
 
     public void levelUp() {
-        List<Attribute> toBeLevelUped = new ArrayList<>(List.of(values()));
+        List<Attribute> toBeLevelUped = new ArrayList<>(List.of(Attribute.values()));
         Collections.shuffle(toBeLevelUped);
         int count = 0;
         for (Attribute next : toBeLevelUped) {
             final int attribute = next.get();
-            if (attributes[attribute] < 20) {
+            if (attributes[attribute] < Attribute.MAX_VALUE) {
                 attributes[attribute]++;
                 count++;
                 if (count == 3) {
@@ -63,12 +61,19 @@ public class PlayerCharacter {
 
     @Override
     public String toString() {
-        return String.format("Name: %s, Class:%s, Str:%s Con:%s Dex:%s Int:%s Wis:%s Cha:%s", 
-            name, pc, attributes[STR.get()], attributes[CON.get()], attributes[DEX.get()], 
-            attributes[INT.get()], attributes[WIS.get()], attributes[CHA.get()]);
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("%s the %s,", name, pc));
+        builder.append(" Str:" + attributes[Attribute.STR.get()]);
+        builder.append(" Con:" + attributes[Attribute.CON.get()]);
+        builder.append(" Dex:" + attributes[Attribute.DEX.get()]);
+        builder.append(" Int:" + attributes[Attribute.INT.get()]);
+        builder.append(" Wis:" + attributes[Attribute.WIS.get()]);
+        builder.append(" Cha:" + attributes[Attribute.CHA.get()]);
+        builder.append(".");
+        return builder.toString();
     }
 
-    public static PlayerCharacter randomCharacter(String name){
+    public static PlayerCharacter randomCharacter(String name) {
         PlayerClass allClasses[] = PlayerClass.values();
         int randomClass = ThreadLocalRandom.current().nextInt(allClasses.length);
         PlayerClass pc = allClasses[randomClass];
